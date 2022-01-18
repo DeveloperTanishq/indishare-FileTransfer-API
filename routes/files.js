@@ -77,7 +77,7 @@ router.post('/send', async (req, res) => {
         text: `${emailFrom} shared a file with you.`,
         html: require('../services/emailTemplate')({
                   emailFrom,
-                  downloadLink: `${process.env.APP_BASE_URL}/files/${file.uuid}` ,
+                  downloadLink: `${process.env.APP_BASE_URL}/files/${file.uuid}?source=email` ,
                   size: parseInt(file.size/1000) + ' KB',
                   expires: '24 hours'
               })
@@ -87,7 +87,7 @@ router.post('/send', async (req, res) => {
         return res.status(500).json({error: err.message});
       });
   } catch(err) {
-    return res.status(500).send({ error: 'Something went wrong.'});
+    return res.status(500).send({ error: err.message});
   }
 
   });
