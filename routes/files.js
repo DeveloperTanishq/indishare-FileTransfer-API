@@ -26,7 +26,7 @@ let upload = multer({
 
 router.post('/', (req, res) => {
     //Store File
-    
+
     upload(req, res, async(err)=>{
     // Validate request
         if(err){
@@ -58,7 +58,7 @@ router.post('/send', async (req, res) => {
     if(!uuid || !emailTo || !emailFrom) {
         return res.status(422).send({ error: 'All fields are required except expiry.'});
     }
-    // Get data from db 
+    // Get data from db
     try {
       const file = await File.findOne({ uuid: uuid });
       if(file.sender) {
@@ -67,7 +67,7 @@ router.post('/send', async (req, res) => {
       file.sender = emailFrom;
       file.receiver = emailTo;
       const response = await file.save();
-     
+
       // send mail
       const sendMail = require('../services/emailService');
       sendMail({
@@ -76,8 +76,8 @@ router.post('/send', async (req, res) => {
         subject: 'IndiShare file sharing',
         text: `${emailFrom} shared a file with you.`,
         html: require('../services/emailTemplate')({
-                  emailFrom, 
-                  downloadLink: `${process.env.APP_BASE_URL}/files/${file.uuid}?source=email` ,
+                  emailFrom,
+                  downloadLink: `${process.env.APP_BASE_URL}/files/${file.uuid}` ,
                   size: parseInt(file.size/1000) + ' KB',
                   expires: '24 hours'
               })
@@ -89,8 +89,8 @@ router.post('/send', async (req, res) => {
   } catch(err) {
     return res.status(500).send({ error: 'Something went wrong.'});
   }
-  
+
   });
-  
+
 
 module.exports = router;
