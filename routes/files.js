@@ -54,7 +54,7 @@ router.post('/', (req, res) => {
 
 //Send Response -> Link Through Email
 router.post('/send', async (req, res) => {
-    const { uuid, emailTo, emailFrom } = req.body;
+    const {emailFrom, emailTo, uudid } = req.body;
     if(!uuid || !emailTo || !emailFrom) {
         return res.status(422).send({ error: 'All fields are required except expiry.'});
     }
