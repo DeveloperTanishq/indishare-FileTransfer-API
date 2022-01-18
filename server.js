@@ -14,13 +14,7 @@ app.use(express.json());
 const connectDB = require('./config/db');
 connectDB();
 
-//CORS
 
-const corsOptions = {
-    origin: process.env.ALLOWED_CLIENTS.split(',')
-}
-
-app.use(cors(corsOptions))
 
 
 //Template Engine
